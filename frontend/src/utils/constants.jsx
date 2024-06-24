@@ -3,11 +3,13 @@ export const image =
 
   export const bg = "https://wallpapercave.com/wp/wp1917128.jpg";
 
+  const token=import.meta.env.VITE_BEARER_TOKEN
+
 
 export const API_OPTIONS={
   method: 'GET',
   headers: {
     accept: 'application/json',
-    Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjYWU5Y2MwN2MzZjRkYzAwNWIyZjdlNmRlNDBlYzE5NiIsIm5iZiI6MTcxOTIxMzI4MS4xNjMzNDgsInN1YiI6IjYyN2E4MTdlYWJkZWMwMDA2NzcxNTVlZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.w4M6BFNzfyLyjEUUjay9_ZPKkKMm6UxjaGPyBqJcmjg'
+    Authorization: token
   }
 }
