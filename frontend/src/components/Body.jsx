@@ -25,6 +25,8 @@ const Body = () => {
         },
         
     ])
+
+    
     useEffect(()=>{
         onAuthStateChanged(auth, (user) => {
           if (user) {
