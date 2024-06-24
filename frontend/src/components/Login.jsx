@@ -119,7 +119,7 @@ const Login = () => {
       </div>
 
       {/* Form Container */}
-      <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2  p-8 bg-black bg-opacity-80 rounded-lg shadow-lg w-full max-w-md">
+      <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2  p-8 bg-black bg-opacity-80 rounded-lg shadow-lg w-full max-w-md" onSubmit={handleSubmit}>
         <h1 className="text-white text-3xl py-4 font-bold text-center">
           {isSignin ? "Sign in" : "Sign up"}
         </h1>
