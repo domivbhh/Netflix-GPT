@@ -13,3 +13,6 @@ export const API_OPTIONS={
     Authorization: token
   }
 }
+
+export const IMG_CDN =
+  "https://image.tmdb.org/t/p/w500/";
