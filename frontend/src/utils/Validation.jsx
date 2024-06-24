@@ -12,7 +12,7 @@ export const checkValidateData=(email,pass)=>{
             return 'Email is not Valid'
     }
     if(!isPasswordValid){
-        return 'Password is not Valid'
+        return 'Check Password! Should contain special char,numbers,Caps letter '
     }
     return null
 }

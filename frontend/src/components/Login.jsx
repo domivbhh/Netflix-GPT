@@ -1,62 +1,64 @@
-import React, { useRef, useState } from 'react'
-import Header from './Header';
-import {checkValidateData} from '../utils/Validation'
+import React, { useRef, useState } from "react";
+import Header from "./Header";
+import { checkValidateData } from "../utils/Validation";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-import { auth } from '../utils/firebase';
-import { addUser } from '../Store/userSlice';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-
-
-
+import { auth } from "../utils/firebase";
+import { addUser } from "../Store/userSlice";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { bg } from "../utils/constants";
 
 const Login = () => {
-    const[isSignin,setIsSignin]=useState(true)
-    const[error,setError]=useState('')
-    // const dispatch=useDispatch()
-    const navigate=useNavigate()
-  
-    const dispatch=useDispatch()
-    const email=useRef(null);
-    const password=useRef(null)
-    const name=useRef(null)
+  const [isSignin, setIsSignin] = useState(true);
+  const [error, setError] = useState("");
+  // const dispatch=useDispatch()
+  const navigate = useNavigate();
 
+  const dispatch = useDispatch();
+  const email = useRef(null);
+  const password = useRef(null);
+  const name = useRef(null);
 
+  const toggleSignup = () => {
+    setIsSignin(!isSignin);
+  };
 
-  const toggleSignup=()=>{
-    setIsSignin(!isSignin)
-  }
-
-  const handleSubmit=(e)=>{
-    e.preventDefault()
-    let a
-    a = checkValidateData(email.current.value,password.current.value);
-    console.log(a)
-    setError(a)
-    if(isSignin===false){
-      createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let a;
+    a = checkValidateData(email.current.value, password.current.value);
+    a;
+    setError(a);
+    if (isSignin === false && !a) {
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
         .then((userCredential) => {
           // Signed up
-          const user=userCredential.user
+          const user = userCredential.user;
           // console.log(user)
           updateProfile(user, {
             displayName: name.current.value,
             photoURL: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
           })
             .then(() => {
-            const {uid,displayName,email,photoURL}= auth.currentUser;
-            console.log(uid, displayName, email, photoURL);
+              const { uid, displayName, email, photoURL } = auth.currentUser;
+              // console.log(uid, displayName, email, photoURL);
 
-              dispatch(addUser({
-                uid,
-                email,
-                photoURL,
-                displayName
-              }))
+              dispatch(
+                addUser({
+                  uid,
+                  email,
+                  photoURL,
+                  displayName,
+                })
+              );
               navigate("/browse");
             })
             .catch((error) => {
@@ -69,41 +71,36 @@ const Login = () => {
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          setError(errorCode+' - '+errorMessage)
+          setError(errorCode + " - " + errorMessage);
           // ..
         });
-
-
-
     }
-    if(isSignin)
+    if (isSignin && !a) {
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          // console.log("login user", user);
+          if (user) {
+            navigate("/browse");
+          }
 
-      {
-        signInWithEmailAndPassword(auth, email.current.value, password.current.value)
-          .then((userCredential) => {
-            // Signed in
-            const user = userCredential.user;
-            console.log("login user",user)
-            if (user) {
-              navigate("/browse");
-            }
-          
-            // navigate('/')
-            // ...
-          })
-          .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
+          // navigate('/')
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
           setError(errorMessage);
+        });
+    }
 
-          });
-      }
-
-
-  
-      // console.log(a)    
-  }
-
+    // console.log(a)
+  };
 
   return (
     <div className="relative">
@@ -111,15 +108,14 @@ const Login = () => {
 
       {/* Background Image */}
       <div className="absolute inset-0">
-        <img
-          src="https://wallpapercave.com/wp/wp1917128.jpg"
-          alt=""
-          className="h-screen w-full object-cover"
-        />
+        <img src={bg} alt="" className="h-screen w-full object-cover" />
       </div>
 
       {/* Form Container */}
-      <form className="absolute top-1/2 left-1/2 transform -translate-x-1/2  p-8 bg-black bg-opacity-80 rounded-lg shadow-lg w-full max-w-md" onSubmit={handleSubmit}>
+      <form
+        className="absolute top-28 left-1/2 transform -translate-x-1/2  p-8 bg-black bg-opacity-80 rounded-lg shadow-lg w-full max-w-md"
+        onSubmit={handleSubmit}
+      >
         <h1 className="text-white text-3xl py-4 font-bold text-center">
           {isSignin ? "Sign in" : "Sign up"}
         </h1>
@@ -211,11 +207,9 @@ const Login = () => {
     //   </form>
     // </div>
   );
-}
+};
 
-export default Login
-
-
+export default Login;
 
 // import { getAuth, updateProfile } from "firebase/auth";
 // const auth = getAuth();

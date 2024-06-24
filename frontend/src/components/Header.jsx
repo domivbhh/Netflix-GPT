@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { onAuthStateChanged } from "firebase/auth";
 import { addUser, removeUser } from "../Store/userSlice";
+import { image } from '../utils/constants';
 
 const Header = () => {
   const dispatch=useDispatch()
@@ -62,7 +63,7 @@ signOut(auth)
     // </div>
     <div className="absolute px-8 py-2 bg-gradient-to-b from-black z-10 w-screen flex justify-between items-center">
       <img
-        src="https://cdn.cookielaw.org/logos/dd6b162f-1a32-456a-9cfe-897231c7763c/4345ea78-053c-46d2-b11e-09adaef973dc/Netflix_Logo_PMS.png"
+        src={image}
         alt="logo"
         className="w-28 md:w-36 lg:w-44" // Adjust width based on different screen sizes
       />
