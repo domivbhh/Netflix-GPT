@@ -4,20 +4,26 @@ import {checkValidateData} from '../utils/Validation'
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import { auth } from '../utils/firebase';
-// import { } from "firebase/auth";
+import { addUser } from '../Store/userSlice';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
-// const auth = getAuth();
+
 
 
 const Login = () => {
     const[isSignin,setIsSignin]=useState(true)
     const[error,setError]=useState('')
+    // const dispatch=useDispatch()
+    const navigate=useNavigate()
   
-    
+    const dispatch=useDispatch()
     const email=useRef(null);
     const password=useRef(null)
+    const name=useRef(null)
 
 
 
@@ -35,8 +41,29 @@ const Login = () => {
       createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
         .then((userCredential) => {
           // Signed up
-          const user = userCredential.user;
-          console.log(user)
+          const user=userCredential.user
+          // console.log(user)
+          updateProfile(user, {
+            displayName: name.current.value,
+            photoURL: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+          })
+            .then(() => {
+            const {uid,displayName,email,photoURL}= auth.currentUser;
+            console.log(uid, displayName, email, photoURL);
+
+              dispatch(addUser({
+                uid,
+                email,
+                photoURL,
+                displayName
+              }))
+              navigate("/browse");
+            })
+            .catch((error) => {
+              // An error occurred
+              setError(error.message);
+              // ...
+            });
           // ...
         })
         .catch((error) => {
@@ -57,6 +84,10 @@ const Login = () => {
             // Signed in
             const user = userCredential.user;
             console.log("login user",user)
+            if (user) {
+              navigate("/browse");
+            }
+          
             // navigate('/')
             // ...
           })
@@ -88,10 +119,10 @@ const Login = () => {
         <h1 className="text-white text-3xl py-4 font-bold">
           {isSignin ? "Sign in" : "Sign up"}
         </h1>
-        {/* {
+        {
           !isSignin && <input type='text' ref={name} placeholder='Name' className='p-4 text-black
            my-2 w-full bg-slate-300 '/>
-        } */}
+        }
         <input
           type="text"
           ref={email}
@@ -101,6 +132,7 @@ const Login = () => {
         <input
           type="password"
           ref={password}
+          autoComplete='true'
           placeholder="Password"
           className="p-4 my-2 w-full  bg-slate-300 text-black"
         />
@@ -117,3 +149,20 @@ const Login = () => {
 }
 
 export default Login
+
+
+
+// import { getAuth, updateProfile } from "firebase/auth";
+// const auth = getAuth();
+// updateProfile(auth.currentUser, {
+//   displayName: "Jane Q. User",
+//   photoURL: "https://example.com/jane-q-user/profile.jpg",
+// })
+//   .then(() => {
+//     // Profile updated!
+//     // ...
+//   })
+//   .catch((error) => {
+//     // An error occurred
+//     // ...
+//   });
