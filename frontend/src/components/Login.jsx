@@ -1,6 +1,15 @@
 import React, { useRef, useState } from 'react'
 import Header from './Header';
 import {checkValidateData} from '../utils/Validation'
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from '../utils/firebase';
+// import { } from "firebase/auth";
+
+// const auth = getAuth();
+
 
 const Login = () => {
     const[isSignin,setIsSignin]=useState(true)
@@ -17,32 +26,51 @@ const Login = () => {
   }
 
   const handleSubmit=(e)=>{
-    let a
     e.preventDefault()
+    let a
+    a = checkValidateData(email.current.value,password.current.value);
+    console.log(a)
+    setError(a)
     if(isSignin===false){
-      console.log('signup called')
-      a = checkValidateData(name.current.value,email.current.value,password.current.value);
-      setError(a)
+      createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          console.log(user)
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setError(errorCode+' - '+errorMessage)
+          // ..
+        });
+
+
 
     }
     if(isSignin)
+
       {
-      console.log("signin called");
+        signInWithEmailAndPassword(auth, email.current.value, password.current.value)
+          .then((userCredential) => {
+            // Signed in
+            const user = userCredential.user;
+            console.log("login user",user)
+            // navigate('/')
+            // ...
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+          setError(errorMessage);
 
-      a=checkValidateData(email.current.value,password.current.value)
-      console.log(a)
-      setError(a);
+          });
       }
 
-      if(a===null){
-      email.current.value=''
-      password.current.value=''
 
-      }
-      console.log(a)
-    
-
-    
+  
+      // console.log(a)    
   }
 
 
