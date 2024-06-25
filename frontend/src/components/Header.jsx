@@ -2,16 +2,21 @@ import React, { useEffect } from 'react'
 import { signOut } from "firebase/auth";
 import { auth } from '../utils/firebase';
 import { useDispatch, useSelector } from 'react-redux';
-// import { removeUser } from '../Store/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { onAuthStateChanged } from "firebase/auth";
+import { supported_lang } from "../utils/constants";
 import { addUser, removeUser } from "../Store/userSlice";
 import { image } from '../utils/constants';
+import { toggleGPTsearch } from '../Store/gptSlice';
+import { changeLang } from '../Store/configSlice';
+
+
 
 const Header = () => {
   const dispatch=useDispatch()
   const navigate=useNavigate()
   const user=useSelector((state)=>state.user)
+  const showGPTsearch=useSelector((state)=>state.gpt)
   const handleSignout=()=>{
 signOut(auth)
   .then(() => {
@@ -41,6 +46,17 @@ signOut(auth)
     }
   }, []);
 
+  const handleGPT=()=>{
+    // console.log('gpt toggle')
+    dispatch(toggleGPTsearch())
+  }
+
+  const handleLangChange=(e)=>{
+    // console.log(e.target.value)
+    dispatch(changeLang(e.target.value))
+
+  }
+
 
   return (
     // <div className="absolute px-8 py-2 bg-gradient-to-b from-black z-10 w-screen flex justify-between">
@@ -69,6 +85,22 @@ signOut(auth)
       />
       {user ? (
         <div className="flex p-2 items-center">
+          {showGPTsearch.showGPT && (
+            <select
+              className="p-2 bg-gray-900 text-white"
+              onChange={(e) => handleLangChange(e)}
+            >
+              {supported_lang.map((ele, ind) => {
+                return <option key={ind}>{ele.identifier}</option>;
+              })}
+            </select>
+          )}
+          <button
+            className="py-2 px-4 m-2 bg-purple-600 text-white rounded-md mx-4 my-2"
+            onClick={handleGPT}
+          >
+            {showGPTsearch.showGPT ? "Home" : "GPT Search"}
+          </button>
           {/* Uncomment and adjust user profile image size if needed */}
           {/* <img
         src={user.profileURL}
