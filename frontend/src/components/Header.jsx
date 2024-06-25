@@ -78,11 +78,15 @@ signOut(auth)
     //   :''}
     // </div>
     <div className="absolute px-8 py-2 bg-gradient-to-b from-black z-10 w-screen flex justify-between items-center">
+      <div className='flex'>
+
       <img
         src={image}
         alt="logo"
         className="w-28 md:w-36 lg:w-44" // Adjust width based on different screen sizes
-      />
+        />
+        <span className='text-2xl text-red-600 mt-5 font-extrabold'>Movie Search</span>
+      </div>
       {user ? (
         <div className="flex p-2 items-center">
           {showGPTsearch.showGPT && (
@@ -96,10 +100,10 @@ signOut(auth)
             </select>
           )}
           <button
-            className="py-2 px-4 m-2 bg-purple-600 text-white rounded-md mx-4 my-2"
+            className="py-2 px-4 m-2 bg-red-600 text-white rounded-md mx-4 my-2"
             onClick={handleGPT}
           >
-            {showGPTsearch.showGPT ? "Home" : "GPT Search"}
+            {showGPTsearch.showGPT ? "Home" : "Search Movie"}
           </button>
           {/* Uncomment and adjust user profile image size if needed */}
           {/* <img
@@ -107,7 +111,7 @@ signOut(auth)
         alt=""
         className='w-10 h-10 my-4 rounded-full'
       /> */}
-          <p className="font-bold bg-red-500 text-white capitalize p-2 m-2 text-base md:text-xl">
+          <p className="font-bold bg-red-500 text-white capitalize rounded-md p-1 m-2 text-base md:text-xl">
             Hi {user.displayName}
           </p>
           <button

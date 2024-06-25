@@ -20,7 +20,7 @@ const{popularPlaying,nowPlaying,topRated,upComing}=movies
   return (
     <div className="bg-black">
       <div className="-mt-32 z-30 relative w-screen bg-black bg-opacity-5">
-        <MovieList title={"Now Playing"} movies={nowPlaying} />
+        <MovieList title={"Recent Release"} movies={nowPlaying} />
         <MovieList title={"Popular"} movies={popularPlaying} />
         <MovieList title={"Trending"} movies={topRated} />
         <MovieList title={"Upcoming"} movies={upComing} />
