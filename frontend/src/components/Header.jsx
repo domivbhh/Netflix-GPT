@@ -77,15 +77,15 @@ signOut(auth)
     //   </div>
     //   :''}
     // </div>
-    <div className="absolute px-8 py-2 bg-gradient-to-b from-black z-10 w-screen flex justify-between items-center">
+    <div className="absolute px-8 py-2 bg-gradient-to-b from-black z-10 w-screen flex md:justify-between mx-auto items-center flex-col md:flex-row">
       <div className='flex'>
 
       <img
         src={image}
         alt="logo"
-        className="w-28 md:w-36 lg:w-44" // Adjust width based on different screen sizes
-        />
-        <span className='text-2xl text-red-600 mt-5 font-extrabold'>Movie Search</span>
+        className="w-28 md:w-36 lg:w-44 mx-auto md:mx-0" // Adjust width based on different screen sizes
+        /> 
+        <span className='text-2xl text-red-600 mt-2 font-bold border-black shadow-md md:mt-5 md:font-extrabold'>Movie Search</span>
       </div>
       {user ? (
         <div className="flex p-2 items-center">
