@@ -10,7 +10,7 @@ const MovieList = ({title,movies}) => {
     <div className="px-6 my-2 bg-black">
       <h1 className="text-2xl py-6 font-bold text-red-500 bg-gradient-to-r from-black to-red-500">{title}</h1>
       <div className="flex">
-        <div className="flex flex-wrap gap-3 justify-evenly">
+        <div className="flex flex-wrap gap-3 justify-evenly md:justify-normal">
           {movies && movies.map((ele) => <MovieCard ele={ele} key={ele.id} />)}
         </div>
       </div>
